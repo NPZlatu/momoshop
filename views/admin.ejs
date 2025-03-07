@@ -148,8 +148,15 @@
             <span>Momo</span> Shop
         </a>
         <div class="nav-links">
-            <span class="welcome-message">Welcome, Admin</span>
-            <a href="/logout" class="btn">Logout</a>
+            <% if (user) { %>
+                <span class="welcome-message">Welcome, <%= user.username %>!</span>
+                <a href="/admin" class="btn">Dashboard</a>
+                <a href="/logout" class="btn">Logout</a>
+                <% } else { %>
+                    <a href="/#mouth-watering" class="btn">Place Order</a>
+                    <a href="/login" class="btn">Login</a>
+                    <a href="/register" class="btn">Register</a>
+                    <% } %>
         </div>
         <div class="hamburger-menu" onclick="toggleMenu()">
             &#9776; <!-- Hamburger icon -->
@@ -191,7 +198,7 @@
                             </td>
                             <td>
                                 <!-- Edit Button -->
-                                <a href="/admin/edit/<%= food.id %>" style="font-size:12px;">Edit</a>
+                                <a href="/admin/update/<%= food.id %>" style="font-size:12px;">Edit</a>
                                 <!-- Delete Button -->
                                 <form method="POST" action="/admin/delete/<%= food.id %>" style="display:inline;">
                                     <button type="submit" style="font-size:12px;">Delete</button>

@@ -165,35 +165,35 @@
 
     <!-- Page Content -->
     <div class="container">
-        <h1>Add Momo</h1>
+        <h1>Update Momo</h1>
 
         <!-- Toastr Notifications -->
-        <% if (errorMessage && errorMessage.length> 0) { %>
+        <% if (errorMessage && errorMessage.length > 0) { %>
             <script>
-                toastr.error("<%= errorMessage[0] %>"); 
+                toastr.error("<%= errorMessage[0] %>");
             </script>
-            <% } %>
+        <% } %>
 
-                <!-- Add Momo Form -->
-                <form action="/admin/momo" method="POST" class="form-container" onsubmit="return validateForm()">
-                    <label for="momoName">Momo Name</label>
-                    <input type="text" id="momoName" name="momoName" required>
+        <!-- Update Momo Form -->
+        <form action="/admin/update/<%= momo.id %>" method="POST" class="form-container" onsubmit="return validateForm()">
+            <label for="momoName">Momo Name</label>
+            <input type="text" id="momoName" name="momoName" value="<%= momo.name %>" required>
 
-                    <label for="momoPrice">Price</label>
-                    <input type="number" id="momoPrice" name="momoPrice" required>
+            <label for="momoPrice">Price</label>
+            <input type="number" id="momoPrice" name="momoPrice" value="<%= momo.price %>" required>
 
-                    <label for="imageUrl">Image URL</label>
-                    <input type="text" id="imageUrl" name="imageUrl" required>
+            <label for="imageUrl">Image URL</label>
+            <input type="text" id="imageUrl" name="imageUrl" value="<%= momo.image_url %>" required>
 
-                    <label for="momoDescription">Description</label>
-                    <br />
-                    <textarea id="momoDescription" name="momoDescription" rows="4" required></textarea>
-                    <br />
+            <label for="momoDescription">Description</label>
+            <br />
+            <textarea id="momoDescription" name="momoDescription" rows="4" required><%= momo.description %></textarea>
+            <br />
 
-                    <button type="submit" class="btn">Add Momo</button>
-                </form>
+            <button type="submit" class="btn">Update Momo</button>
+        </form>
 
-                <p><a href="/dashboard">Back to Dashboard</a></p>
+        <p><a href="/dashboard">Back to Dashboard</a></p>
     </div>
 
     <script>

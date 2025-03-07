@@ -183,7 +183,7 @@
             <% if (user) { %>
                 <span class="welcome-message">Welcome, <%= user.username %>!</span>
                 <a href="#mouth-watering" class="btn">Place Order</a>
-                <a href="/my-order" class="btn">My Order</a>
+                <a href="my-order" class="btn">My Order</a>
                 <a href="/logout" class="btn">Logout</a>
                 <% } else { %>
                     <a href="#mouth-watering" class="btn">Place Order</a>
@@ -208,51 +208,33 @@
                 </script>
                 <% } %>
 
-    <!-- Main Content Section -->
-    <div class="container">
-        <h1>Welcome to Momo Shop</h1>
-        <p>Enjoy the best handmade momos with authentic flavors.</p>
-        <img src="images/momo.jpg" alt="Delicious Momos">
-    </div>
+    <!-- My Orders Section -->
+    <div id="my-orders" class="menu-section">
+        <h2>Your Orders</h2>
 
-    <!-- Menu Section -->
-    <div id="mouth-watering" class="menu-section">
-        <h2>Mouth-Watering Menus</h2>
-        <div class="menu-grid">
-            <% momos.forEach((momo) => { %>
-                <div class="menu-item">
-                    <img src="<%= momo.image_url %>" alt="<%= momo.name %>">
-                    <h3><%= momo.name %></h3>
-                    <p><%= momo.description %></p>
-                    <div class="price">$<%= momo.price %></div>
-                    <% 
-                     const isInOrder = orderedMomos.has(momo.id);
-                    %>
-                    <% if (isInOrder) { %>
+        <% if (orders.length === 0) { %>
+            <p>You have no orders yet.</p>
+        <% } else { %>
+            <div class="menu-grid">
+                <% orders.forEach(function(order) { %>
+                    <div class="menu-item">
+                        <img src="<%= order.image_url %>" alt="<%= order.name %>">
+                        <h3><%= order.name %></h3>
+                        <p><%= order.description %></p>
+                        <div class="price">$<%= order.price %></div>
                         <!-- Remove from Order Button -->
                         <form action="/remove-from-order" method="POST">
-                            <input type="hidden" name="momoId" value="<%= momo.id %>">
+                            <input type="hidden" name="momoId" value="<%= order.momo_id %>">
                             <input type="hidden" name="redirectUrl" value="<%= requestUrl %>">
                             <button type="submit" class="remove-from-order">Remove from Order</button>
-                        </form>                        
-                    <% } else { %>
-                        <!-- Add to Order Button -->
-                        <form action="/add-to-order" method="POST">
-                            <input type="hidden" name="momoId" value="<%= momo.id %>">
-                            <button type="submit" class="add-to-order">Add to Order</button>
                         </form>
-                    <% } %>
-                </div>
-            <% }) %>
-        </div>
+                        
+                    </div>
+                <% }); %>
+            </div>
+        <% } %>
     </div>
 
-    <script>
-        function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('open');
-        }
-    </script>
 </body>
 
 </html>
