@@ -10,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const ejs = require("ejs");
 const path = require("path");
 const flash = require("connect-flash");
+require("dotenv").config();
 
 const app = express();
 
