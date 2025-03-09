@@ -396,5 +396,5 @@ app.get("/about-us", (req, res) => {
 });
 
 
-// Start the server
+// List to the port and start the server
 app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
