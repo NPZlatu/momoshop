@@ -20,6 +20,9 @@ const db = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
+  ssl: {
+    rejectUnauthorized: false, 
+  }
 });
 
 // Middleware
@@ -124,7 +127,7 @@ app.get("/menu", async (req, res) => {
 app.get("/login", (req, res) => {
   const errorMessage = req.flash("error");
   const successMessage = req.flash("success");
-  res.render("login", { errorMessage, successMessage });
+  res.render("login", { errorMessage, successMessage, user: req.user });
 });
 
 app.post("/login", (req, res, next) => {
@@ -161,7 +164,8 @@ app.get("/logout", (req, res) => {
 
 app.get("/register", (req, res) => {
   const errorMessage = req.flash("error");
-  res.render("register", { errorMessage });
+  const successMessage = req.flash("success");
+  res.render("register", { errorMessage, user: req.user, successMessage });
 });
 
 app.post("/register", async (req, res) => {
@@ -186,8 +190,10 @@ app.post("/register", async (req, res) => {
 
 // Admin page
 app.get("/admin", isAdmin, async (req, res) => {
+  const errorMessage = req.flash("error");
+  const successMessage = req.flash("success");
   const [foods] = await db.query("SELECT * FROM foods");
-  res.render("admin", { foods, user: req.user });
+  res.render("admin", { foods, user: req.user, errorMessage, successMessage });
 });
 
 // Admin momo page
@@ -384,9 +390,10 @@ app.get("/my-order", async (req, res) => {
   }
 });
 
-
-
-
+app.get("/about-us", (req, res) => {
+  res.render("about-us", { user: req.user, errorMessage: req.flash("error"), 
+    successMessage: req.flash("success") });
+});
 
 
 // Start the server

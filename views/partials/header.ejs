@@ -1,0 +1,54 @@
+<div class="nav-bar">
+    <div class="nav-logo"><a style="text-decoration: none;" href="/">Momo <span class="logo-partial">Shop</span></a></div>
+    <div class="nav-links">
+        <% if (user) { %>
+            <span class="welcome-message">Welcome, <%= user.username %>!</span>
+            <% if (user.role === 'admin') { %>
+                <a href="/admin">Dashboard</a>
+            <% } else { %>
+            <a href="/#mouth-watering">Menu</a>
+            <a href="/my-order">My Order</a>
+            <a href="/about-us">About Us</a>
+            <% } %>
+            <a href="/logout">Logout</a>
+        <% } else { %>
+            <a href="/#mouth-watering">Menu</a>
+            <a href="/about-us">About Us</a>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        <% } %>
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<div class="nav-links-mobile">
+    <% if (user) { %>
+        <span class="welcome-message">Welcome, <%= user.username %>!</span>
+        <a href="/#mouth-watering">Menu</a>
+        <a href="/my-order">My Order</a>
+        <a href="/about-us">About Us</a>
+        <a href="/logout">Logout</a>
+    <% } else { %>
+        <a href="/#mouth-watering">Menu</a>
+        <a href="/about-us">About Us</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+    <% } %>
+</div>
+
+<% if (errorMessage && errorMessage.length> 0) { %>
+    <script>
+        toastr.error("<%= errorMessage[0] %>"); 
+    </script>
+    <% } %>
+
+        <% if (successMessage && successMessage.length> 0) { %>
+            <script>
+                toastr.success("<%= successMessage[0] %>"); 
+            </script>
+            <% } %>

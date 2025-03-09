@@ -1,0 +1,149 @@
+/* General Page Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+/* Navigation Bar */
+.nav-bar {
+    background-color: #343a40;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo a {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.nav-links a:hover {
+    color: #ff6600;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25px;
+    height: 20px;
+}
+
+.hamburger div {
+    width: 100%;
+    height: 4px;
+    background-color: white;
+}
+
+.nav-links-mobile {
+    display: none;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+/* Admin Panel Section */
+.admin-section {
+    padding: 20px;
+}
+
+.admin-table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-new-btn {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.add-new-btn:hover {
+    background-color: #218838;
+}
+
+h3 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Table Styles */
+.admin-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.admin-table th {
+    background-color: #f8f9fa;
+    font-size: 1.1rem;
+}
+
+.admin-table td img {
+    max-width: 50px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.admin-table td button {
+    padding: 5px 10px;
+    background-color: #dc3545;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin-table td button:hover {
+    background-color: #c82333;
+}
+
+/* Mobile Styling */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .admin-table-container {
+        padding: 10px;
+    }
+
+    .admin-table {
+        font-size: 0.9rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 8px;
+    }
+}

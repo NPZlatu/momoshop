@@ -6,165 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Momo Shop - Admin Panel</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+
 
     <!-- Include Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEJwDDRrq0n6cF8dO6Zz8vCkZpum8fD5K1gkPq7YfP5v0dJb7f5I2Z9lwUglr" crossorigin="anonymous">
-
-    <style>
-        /* Navigation bar styling */
-        .nav-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Text-based logo styling */
-        .nav-logo {
-            font-family: 'Arial', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #333;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-logo span {
-            color: #ff6600;
-            /* Highlight color */
-        }
-
-        /* Navigation link styling */
-        .nav-bar a {
-            padding: 10px 15px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .nav-bar a:hover {
-            color: #ff6600;
-        }
-
-        /* Hamburger menu styling */
-        .hamburger-menu {
-            display: none;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-
-        /* Welcome message styling */
-        .welcome-message {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            margin-right: 15px;
-        }
-
-        /* Admin Panel Section Styling */
-        .admin-section {
-            background-color: #f9f9f9;
-        }
-
-        .admin-section h2 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        /* Centering the table */
-        .admin-table-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin-top: 20px;
-        }
-
-        .admin-table {
-            width: 80%;
-        }
-
-        .admin-table th,
-        td {
-            padding: 10px;
-            text-align: left;
-        }
-
-        /* Table Image Styling */
-        .admin-table img {
-            width: 50px;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        /* Add New Button Alignment */
-        .add-new-btn {
-            align-self: flex-end;
-            margin-bottom: 20px;
-        }
-
-        /* Responsive navigation for mobile */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                width: 100%;
-                text-align: center;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                background-color: #fff;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 10px;
-            }
-
-            .hamburger-menu {
-                display: block;
-            }
-
-            .nav-links.open {
-                display: block;
-            }
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+      
 </head>
 
 <body>
-
-    <!-- Navigation Bar -->
-    <div class="nav-bar">
-        <a href="/" class="nav-logo">
-            <span>Momo</span> Shop
-        </a>
-        <div class="nav-links">
-            <% if (user) { %>
-                <span class="welcome-message">Welcome, <%= user.username %>!</span>
-                <a href="/admin" class="btn">Dashboard</a>
-                <a href="/logout" class="btn">Logout</a>
-                <% } else { %>
-                    <a href="/#mouth-watering" class="btn">Place Order</a>
-                    <a href="/login" class="btn">Login</a>
-                    <a href="/register" class="btn">Register</a>
-                    <% } %>
-        </div>
-        <div class="hamburger-menu" onclick="toggleMenu()">
-            &#9776;
-        </div>
-    </div>
-
+    <%- include('partials/header') %>
     <!-- Page Content -->
-    <div class="container">
+    <div class="admin-section">
         <h1>Add Momo</h1>
 
         <!-- Toastr Notifications -->
@@ -193,7 +51,6 @@
                     <button type="submit" class="btn">Add Momo</button>
                 </form>
 
-                <p><a href="/dashboard">Back to Dashboard</a></p>
     </div>
 
     <script>
@@ -234,6 +91,8 @@
             return true; // Form is valid
         }
     </script>
+
+<%- include('partials/footer') %>
 
 </body>
 
