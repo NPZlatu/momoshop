@@ -1,5 +1,3 @@
-
-
 // Import required modules
 const express = require("express");
 const mysql = require("mysql2/promise");
@@ -21,8 +19,8 @@ const db = mysql.createPool({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
   ssl: {
-    rejectUnauthorized: false, 
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 // Middleware
@@ -90,34 +88,40 @@ function isAdmin(req, res, next) {
 
 // Routes
 app.get("/", async (req, res) => {
-  const userId = req.user?.id || null;;
+  const userId = req.user?.id || null;
   let orderedMomos = new Set();
   const errorMessage = req.flash("error");
   const successMessage = req.flash("success");
-  const requestUrl = '/';
+  const requestUrl = "/";
 
   try {
-    if(userId) {
+    if (userId) {
       // Fetch the user's order
       const [orders] = await db.query(
-          "SELECT foods.id FROM orders INNER JOIN foods ON orders.momo_id = foods.id WHERE orders.user_id = ?",
-          [userId]
+        "SELECT foods.id FROM orders INNER JOIN foods ON orders.momo_id = foods.id WHERE orders.user_id = ?",
+        [userId]
       );
 
       // Create a set of momo IDs that are in the user's order
-       orderedMomos = new Set(orders.map(order => order.id));
+      orderedMomos = new Set(orders.map((order) => order.id));
     }
 
-      // Fetch the available momos (menu)
-      const [momos] = await db.query("SELECT * FROM foods");
+    // Fetch the available momos (menu)
+    const [momos] = await db.query("SELECT * FROM foods");
 
-      res.render("home", { user: req.user, momos, orderedMomos, errorMessage, successMessage, requestUrl });
+    res.render("home", {
+      user: req.user,
+      momos,
+      orderedMomos,
+      errorMessage,
+      successMessage,
+      requestUrl,
+    });
   } catch (err) {
-      console.error("Error fetching orders:", err);
-      res.status(500).send("Internal Server Error.");
+    console.error("Error fetching orders:", err);
+    res.status(500).send("Internal Server Error.");
   }
 });
-
 
 app.get("/menu", async (req, res) => {
   const [foods] = await db.query("SELECT * FROM foods");
@@ -218,7 +222,6 @@ app.post("/admin/momo", async (req, res) => {
       [momoName, momoPrice, imageUrl, momoDescription]
     );
 
-
     req.flash("success", "Momo added successfully!");
     res.redirect("/admin");
   } catch (err) {
@@ -294,107 +297,112 @@ app.post("/admin/delete/:id", isAdmin, async (req, res) => {
   }
 });
 
-
 app.post("/add-to-order", async (req, res) => {
   const { momoId } = req.body;
 
-  if(!req.user) {
+  if (!req.user) {
     req.flash("error", "You must be logged in to add to order.");
     return res.redirect("/login");
   }
-  
-  const userId = req.user.id;  // Assuming the user is logged in
+
+  const userId = req.user.id; // Assuming the user is logged in
 
   if (!userId || !momoId) {
-      return res.status(400).send("Invalid request.");
+    return res.status(400).send("Invalid request.");
   }
 
   try {
-      // Check if the user already has this momo in their order
-      const [existingOrder] = await db.query(
-          "SELECT * FROM orders WHERE user_id = ? AND momo_id = ?",
-          [userId, momoId]
-      );
+    // Check if the user already has this momo in their order
+    const [existingOrder] = await db.query(
+      "SELECT * FROM orders WHERE user_id = ? AND momo_id = ?",
+      [userId, momoId]
+    );
 
-      if (existingOrder.length === 0) {
-          // If the user doesn't have this momo in their order, insert a new record
-          await db.query(
-              "INSERT INTO orders (user_id, momo_id) VALUES (?, ?)",
-              [userId, momoId]
-          );
-      }
-      req.flash("success", "Added to Order successfully!");
-      res.redirect("/");  // Redirect back to the home page
+    if (existingOrder.length === 0) {
+      // If the user doesn't have this momo in their order, insert a new record
+      await db.query("INSERT INTO orders (user_id, momo_id) VALUES (?, ?)", [
+        userId,
+        momoId,
+      ]);
+    }
+    req.flash("success", "Added to Order successfully!");
+    res.redirect("/"); // Redirect back to the home page
   } catch (err) {
-      console.error("Error adding to order:", err);
-      req.flash("error", "Error adding to order!");
-      res.status(500).send("Internal Server Error.");
+    console.error("Error adding to order:", err);
+    req.flash("error", "Error adding to order!");
+    res.status(500).send("Internal Server Error.");
   }
-
 });
 
 // Route to handle removing a momo from the user's order
 app.post("/remove-from-order", async (req, res) => {
   // Check if the user is logged in
   if (!req.user) {
-      // If not logged in, redirect to login page
-      return res.redirect("/login");
+    // If not logged in, redirect to login page
+    return res.redirect("/login");
   }
 
-  const userId = req.user.id;  // Get the user's ID from the session or authentication system
-  const momoId = req.body.momoId;  // Get the momo ID from the form submission
-  const redirectUrl = req.body.redirectUrl || '/';  // Get the redirect URL from the form, default to homepage
+  const userId = req.user.id; // Get the user's ID from the session or authentication system
+  const momoId = req.body.momoId; // Get the momo ID from the form submission
+  const redirectUrl = req.body.redirectUrl || "/"; // Get the redirect URL from the form, default to homepage
 
   try {
-      // Delete the order entry for the user and momo
-      await db.query(
-          "DELETE FROM orders WHERE user_id = ? AND momo_id = ?",
-          [userId, momoId]
-      );
+    // Delete the order entry for the user and momo
+    await db.query("DELETE FROM orders WHERE user_id = ? AND momo_id = ?", [
+      userId,
+      momoId,
+    ]);
 
-      // Redirect the user back to the page they were on
-      req.flash("success", "Removed from Order successfully!");
-      res.redirect(redirectUrl);
+    // Redirect the user back to the page they were on
+    req.flash("success", "Removed from Order successfully!");
+    res.redirect(redirectUrl);
   } catch (err) {
-      console.error("Error removing from order:", err);
-      req.flash("error", "Error removing from order!");
-      res.status(500).send("Internal Server Error.");
+    console.error("Error removing from order:", err);
+    req.flash("error", "Error removing from order!");
+    res.status(500).send("Internal Server Error.");
   }
 });
-
 
 // Route to display the user's orders
 app.get("/my-order", async (req, res) => {
   // Check if the user is logged in
   if (!req.user) {
-      return res.redirect("/login");  // Redirect to login if not logged in
+    return res.redirect("/login"); // Redirect to login if not logged in
   }
   const errorMessage = req.flash("error");
   const successMessage = req.flash("success");
-  const requestUrl = '/my-order';
+  const requestUrl = "/my-order";
 
   const userId = req.user.id; // Get the user's ID from the session or authentication system
 
   try {
-      // Fetch the orders for the logged-in user
-      const [orders] = await db.query(
-          "SELECT orders.id, foods.id as momo_id, foods.name, foods.description, foods.price, foods.image_url FROM orders JOIN foods ON orders.momo_id = foods.id WHERE orders.user_id = ?",
-          [userId]
-      );
+    // Fetch the orders for the logged-in user
+    const [orders] = await db.query(
+      "SELECT orders.id, foods.id as momo_id, foods.name, foods.description, foods.price, foods.image_url FROM orders JOIN foods ON orders.momo_id = foods.id WHERE orders.user_id = ?",
+      [userId]
+    );
 
-      // Render the "My Order" page with the user's orders
-      res.render("my-order", { user: req.user, orders: orders, errorMessage, successMessage, requestUrl });
+    // Render the "My Order" page with the user's orders
+    res.render("my-order", {
+      user: req.user,
+      orders: orders,
+      errorMessage,
+      successMessage,
+      requestUrl,
+    });
   } catch (err) {
-      console.error("Error fetching orders:", err);
-      res.status(500).send("Internal Server Error.");
+    console.error("Error fetching orders:", err);
+    res.status(500).send("Internal Server Error.");
   }
 });
 
 app.get("/about-us", (req, res) => {
-  res.render("about-us", { user: req.user, errorMessage: req.flash("error"), 
-    successMessage: req.flash("success") });
+  res.render("about-us", {
+    user: req.user,
+    errorMessage: req.flash("error"),
+    successMessage: req.flash("success"),
+  });
 });
 
-
 // Start the server
-app.listen(process.env.PORT, () => console.log(`Server running on port ${process.env.PORT}`));
+app.listen(8080, () => console.log(`Server running on port 8080}`));
