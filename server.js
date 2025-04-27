@@ -10,7 +10,32 @@ const path = require("path");
 const flash = require("connect-flash");
 require("dotenv").config();
 
+const rateLimit = require("express-rate-limit");
+const cors = require("cors");
+
 const app = express();
+
+// List of allowed domains
+const allowedOrigins = [
+  "localhost",
+  "https://momoshop-fqf0d4baeja5h3gs.newzealandnorth-01.azurewebsites.net",
+];
+
+// CORS configuration
+const corsOptions = {
+  origin: allowedOrigins, // Only allow these domains
+};
+
+app.use(cors(corsOptions));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests from this IP, please try again later.",
+});
+
+// Apply rate limiter to all requests
+app.use(limiter);
 
 // Database connection
 const db = mysql.createPool({
@@ -81,9 +106,9 @@ passport.deserializeUser(async (id, done) => {
 // Middleware to ensure the user is an admin
 function isAdmin(req, res, next) {
   if (!req.user || req.user.role !== "admin") {
-    return res.redirect("/"); // Redirect to home if not an admin
+    return res.status(403).json({ error: "Access denied. Admins only." });
   }
-  next(); // Proceed if user is admin
+  next();
 }
 
 // Routes

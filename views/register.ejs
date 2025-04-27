@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - Momo Shop</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css" />
     <!-- Toastr CSS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
+      rel="stylesheet"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="/js/script.js" defer></script>
+  </head>
 
-</head>
-
-<body>
-
-
+  <body>
     <%- include('partials/header') %>
 
     <div class="container">
-        <h1>Create an Account</h1>
+      <h1>Create an Account</h1>
 
-                <form action="/register" method="POST" class="form-container">
-                    <label>Username</label>
-                    <input type="text" name="username" required>
+      <form
+        action="/register"
+        method="POST"
+        class="form-container register-form"
+      >
+        <label>Username</label>
+        <input type="text" name="username" required />
 
-                    <label>Password</label>
-                    <input type="password" name="password" required>
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          required
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}"
+          title="Password must be at least 8 characters long and include one uppercase letter, one lowercase letter, one digit, and one special character."
+        />
 
-                    <button type="submit" class="btn">Register</button>
-                </form>
-                <p>Already have an account? <a href="/login">Login here</a></p>
-
+        <button type="submit" class="btn">Register</button>
+      </form>
+      <p>Already have an account? <a href="/login">Login here</a></p>
     </div>
 
     <%- include('partials/footer') %>
-
-
-</body>
-
+  </body>
 </html>
