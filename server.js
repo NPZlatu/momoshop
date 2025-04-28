@@ -40,9 +40,9 @@ app.use(limiter);
 // Database connection
 const db = mysql.createPool({
   host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "NirazPaudel62",
+  database: process.env.DB_NAME || "momoshop",
   ssl: {
     rejectUnauthorized: false,
   },
@@ -430,4 +430,4 @@ app.get("/about-us", (req, res) => {
 });
 
 // Start the server
-app.listen(8080, () => console.log(`Server running on port 8080}`));
+app.listen(3000, () => console.log(`Server running on port 3000`));
